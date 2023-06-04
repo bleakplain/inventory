@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package inventory.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/yourusername/inventory-service/api/inventory/v1;inventoryv1";
+
+service Inventory {
+  rpc GetInventory (GetInventoryRequest) returns (GetInventoryResponse) {
+    option (google.api.http) = {
+      get: "/v1/inventory"
+    };
+  }
+
+  rpc UpdateInventory (UpdateInventoryRequest) returns (UpdateInventoryResponse) {
+    option (google.api.http) = {
+      put: "/v1/inventory"
+      body: "*"
+    };
+  }
+}
+
+message GetInventoryRequest {
+  string sku = 1;
+  int64 warehouse_id = 2;
+  string channel = 3;
+}
+
+message GetInventoryResponse {
+  Inventory inventory = 1;
+}
+
+message UpdateInventoryRequest {
+  string sku = 1;
+  int64 warehouse_id = 2;
+  string channel = 3;
+  int32 new_quantity = 4;
+}
+
+message UpdateInventoryResponse {
+  bool success = 1;
+}
+
+message Inventory {
+  string sku = 1;
+  int64 warehouse_id = 2;
+  string channel = 3;
+  int32 quantity = 4;
+}

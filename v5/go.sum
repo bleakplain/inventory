@@ -1,0 +1,16 @@
+github.com/go-kratos/kratos/v2 v2.1.1 h1:QoeCmlqsyR+Y3Gx5n5hR6lIyU5Qhje8RO5hDMJr4P3Q=
+github.com/go-kratos/kratos/v2 v2.1.1/go.mod h1:J+G0E7P5k9L7xKJ2lKZ8y6X2zZP9w0cT6jt2AXz+PXY=
+github.com/go-kratos/kratos-layout v0.0.0-20211010065930-4c6f06f3e6a0 h1:5q6eTmCN5mivzI+K5m5iOsmrp4S80Z7xXhR5zgDUK3k=
+github.com/go-kratos/kratos-layout v0.0.0-20211010065930-4c6f06f3e6a0/go.mod h1:J+G0E7P5k9L7xKJ2lKZ8y6X2zZP9w0cT6jt2AXz+PXY=
+github.com/golang/protobuf v1.5.2 h1:ROPKBNFfQgOUMifHyP+KYbvpjbdoFNs+a1V1G1Vr5bA=
+github.com/golang/protobuf v1.5.2/go.mod h1:XVimpn3B6qelqjcsi0j4Ldnxbf0PzHx/ws/mewhr+yE=
+github.com/google/wire v0.6.0 h1:Z5W8ZM2ygbX0Y5lqyqyB5+YHZHJ24GLlPCf3zD1JU3Q=
+github.com/google/wire v0.6.0/go.mod h1:1ARzXTpH8DS1XAlFyz7I9WhsGx4FtrHJrpJ1X7J2d3o=
+github.com/grpc-ecosystem/grpc-gateway/v2 v2.6.3 h1:JU6MjlkMifXmdwR+F4MXwpx3WU8oser63x5G9w5z6Bs=
+github.com/grpc-ecosystem/grpc-gateway/v2 v2.6.3/go.mod h1:7cihV4XibXw5rQ2XFyD+TujPqPbYx0+QYEVrxMF9xAY=
+github.com/jinzhu/gorm v1.9.16 h1:G3LBvIOpenH7KqS5v8qEP2V9oDLXilo0C7qT7JuuAYk=
+github.com/jinzhu/gorm v1.9.16/go.mod h1:G3LBvIOpenH7KqS5v8qEP2V9oDLXilo0C7qT7JuuAYk=
+google.golang.org/grpc v1.40.0 h1:Fn0M5jIKzA8QJN1otP4P4oE95ateEfeEST6YgwldX3Q=
+google.golang.org/grpc v1.40.0/go.mod h1:Fn0M5jIKzA8QJN1otP4P4oE95ateEfeEST6YgwldX3Q=
+google.golang.org/protobuf v1.27.1 h1:U8fpvMrcmy5pZrNK1lt4xCsGvpyWQ/VVv76x4Z9pPkU=
+google.golang.org/protobuf v1.27.1/go.mod h1:U8fpvMrcmy5pZrNK1lt4xCsGvpyWQ/VVv76x4Z9pPkU=

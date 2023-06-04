@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package inventory.v1;
+
+import "google/protobuf/empty.proto";
+
+service Inventory {
+  rpc GetInventory(GetInventoryRequest) returns (InventoryResponse);
+  rpc UpdateInventory(UpdateInventoryRequest) returns (InventoryResponse);
+}
+
+message GetInventoryRequest {
+  string sku = 1;
+}
+
+message UpdateInventoryRequest {
+  string sku = 1;
+  int32 warehouse_id = 2;
+  string channel = 3;
+  int32 quantity = 4;
+}
+
+message InventoryResponse {
+  string sku = 1;
+  int32 warehouse_id = 2;
+  string channel = 3;
+  int32 quantity = 4;
+}

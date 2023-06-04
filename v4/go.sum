@@ -1,0 +1,12 @@
+github.com/go-kratos/kratos/v2 v2.1.1 h1:QoeCmlqsyR+Y3Gx5n5Y6QXBGxtkgN+kw5Rl6kbaiST0=
+github.com/go-kratos/kratos/v2 v2.1.1/go.mod h1:J+Gwe8o64t88oCxBft5Cocx5qSYy1S+Fn7vL9a1xTgM=
+github.com/go-kratos/kratos-layout v0.0.0-20211010065956-4c6f06b3aaf8 h1:5zF8xjVlB9lDpP6D4q5Y1U5ZQf4J8l3j1hR1IOzsn3M=
+github.com/go-kratos/kratos-layout v0.0.0-20211010065956-4c6f06b3aaf8/go.mod h1:J+Gwe8o64t88oCxBft5Cocx5qSYy1S+Fn7vL9a1xTgM=
+github.com/google/wire v0.6.0 h1:2f5VEernYaSIi61jYix0LhDc0tX5Wg5QYiB8y5D5R3U=
+github.com/google/wire v0.6.0/go.mod h1:1ARzXTpH8DS1XAlFyz7I9WhsGx4F6RvSAXB7P1cnlJk=
+github.com/jinzhu/gorm v1.9.16 h1:G3LBvIOpenaIlbnj7ep6GPRINszSLPGr1lNOKuhlEpk=
+github.com/jinzhu/gorm v1.9.16/go.mod h1:G3LBvIOpenaIlbnj7ep6GPRINszSLPGr1lNOKuhlEpk=
+google.golang.org/grpc v1.40.0 h1:Fn0M5jIKzA9Fh/9uj5G8zGTR6W62NOR4T2ZtYYs6eks=
+google.golang.org/grpc v1.40.0/go.mod h1:Fn0M5jIKzA9Fh/9uj5G8zGTR6W62NOR4T2ZtYYs6eks=
+google.golang.org/protobuf v1.27.1 h1:U8fpvMrcmy5pZrNK1lt4xCsGvpyWQ/VVv6QDs8UjoX8=
+google.golang.org/protobuf v1.27.1/go.mod h1:U8fpvMrcmy5pZrNK1lt4xCsGvpyWQ/VVv6QDs8UjoX8=
