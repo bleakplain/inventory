@@ -12,6 +12,9 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/exporters/prometheus"
+	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 
 	"github.com/bleakplain/inventory/internal/conf"
 )
@@ -33,6 +36,16 @@ func init() {
 }
 
 func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
+	// create a new tracer provider with Prometheus exporter
+	exporter, err := prometheus.NewExporter(prometheus.Options{})
+	if err != nil {
+		log.Fatalf("failed to create Prometheus exporter: %v", err)
+	}
+	tp := sdktrace.NewTracerProvider(sdktrace.WithBatcher(exporter))
+
+	// set global tracer provider
+	otel.SetTracerProvider(tp)
+
 	return kratos.New(
 		kratos.ID(id),
 		kratos.Name(Name),
@@ -43,14 +56,31 @@ func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
 			gs,
 			hs,
 		),
+		kratos.TracerProvider(tp),
 	)
 }
 
 func main() {
 	flag.Parse()
 
+	// create a new logger
 	logger := log.NewStdLogger(os.Stdout)
 	log := log.NewHelper(logger)
+
+	// open log file
+	file, err := os.OpenFile("logfile.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalf("failed to open log file: %v", err)
+	}
+	defer file.Close()
+
+	// add file logger to multi logger
+	multiLogger := log.NewMultiLogger()
+	multiLogger.Add(logger)
+	multiLogger.Add(log.NewStdLogger(file))
+
+	// update logger to use multi logger
+	log = log.NewHelper(multiLogger)
 
 	c := config.New(
 		config.WithSource(
