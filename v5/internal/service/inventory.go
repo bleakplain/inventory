@@ -4,52 +4,76 @@ import (
 	"context"
 
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/yourusername/inventory-service/internal/data"
+
+	v1 "github.com/bleakplain/inventory/api/inventory/v1"
+	"github.com/bleakplain/inventory/internal/data"
 )
 
 type InventoryService struct {
-	log *log.Helper
+	v1.UnimplementedInventoryServiceServer
+
+	log  *log.Helper
 	data *data.Data
 }
 
-func NewInventoryService(logger log.Logger, d *data.Data) *InventoryService {
+func NewInventoryService(d *data.Data, logger log.Logger) *InventoryService {
 	return &InventoryService{
 		log:  log.NewHelper(logger),
 		data: d,
 	}
 }
 
-func (s *InventoryService) CreateInventory(ctx context.Context, sku string, warehouseID uint64, channel string, quantity int) (*data.Inventory, error) {
-	inventory := &data.Inventory{
-		Sku:        sku,
-		WarehouseID: warehouseID,
-		Channel:    channel,
-		Quantity:   quantity,
+func (s *InventoryService) UpdateInventory(ctx context.Context,
+	req *v1.UpdateInventoryRequest) (*v1.Inventory, error) {
+	err := s.data.UpdateInventory(&data.Inventory{
+		ID:          req.GetId(),
+		Sku:         req.GetSku(),
+		WarehouseID: req.GetWarehouseId(),
+		Channel:     req.GetChannel(),
+		Quantity:    int(req.GetQuantity()),
+	})
+	if err != nil {
+		return nil, err
 	}
-	err := s.data.CreateInventory(inventory)
-	return inventory, err
+	return &v1.Inventory{
+		Id:          req.GetId(),
+		Sku:         req.GetSku(),
+		WarehouseId: req.GetWarehouseId(),
+		Channel:     req.GetChannel(),
+		Quantity:    req.GetQuantity(),
+	}, nil
 }
 
-func (s *InventoryService) UpdateInventory(ctx context.Context, id uint64, sku string, warehouseID uint64, channel string, quantity int) (*data.Inventory, error) {
-	inventory := &data.Inventory{
-		ID:         id,
-		Sku:        sku,
-		WarehouseID: warehouseID,
-		Channel:    channel,
-		Quantity:   quantity,
+func (s *InventoryService) GetInventory(ctx context.Context,
+	req *v1.GetInventoryRequest) (*v1.Inventory, error) {
+	inventory, err := s.data.GetInventory(req.GetId())
+	if err != nil {
+		return nil, err
 	}
-	err := s.data.UpdateInventory(inventory)
-	return inventory, err
+	return &v1.Inventory{
+		Id:          inventory.ID,
+		Sku:         inventory.Sku,
+		WarehouseId: inventory.WarehouseID,
+		Channel:     inventory.Channel,
+		Quantity:    int32(inventory.Quantity),
+	}, nil
 }
 
-func (s *InventoryService) DeleteInventory(ctx context.Context, id uint64) error {
-	return s.data.DeleteInventory(id)
-}
-
-func (s *InventoryService) GetInventory(ctx context.Context, id uint64) (*data.Inventory, error) {
-	return s.data.GetInventory(id)
-}
-
-func (s *InventoryService) ListInventories(ctx context.Context, sku string, warehouseID uint64, channel string) ([]*data.Inventory, error) {
-	return s.data.ListInventories(sku, warehouseID, channel)
+func (s *InventoryService) ListInventories(ctx context.Context,
+	req *v1.ListInventoriesRequest) (*v1.ListInventoriesResponse, error) {
+	inventories, err := s.data.ListInventories(req.GetSku(), req.GetWarehouseId(), req.GetChannel())
+	if err != nil {
+		return nil, err
+	}
+	var list []*v1.Inventory
+	for _, inventory := range inventories {
+		list = append(list, &v1.Inventory{
+			Id:          inventory.ID,
+			Sku:         inventory.Sku,
+			WarehouseId: inventory.WarehouseID,
+			Channel:     inventory.Channel,
+			Quantity:    int32(inventory.Quantity),
+		})
+	}
+	return &v1.ListInventoriesResponse{Inventories: list}, nil
 }

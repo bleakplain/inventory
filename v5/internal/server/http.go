@@ -1,35 +1,36 @@
 package server
 
 import (
-	"context"
-	"net/http"
-
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
-	"github.com/go-kratos/kratos/v2/transport/http/server"
-	"github.com/yourusername/inventory-service/internal/conf"
-	"github.com/yourusername/inventory-service/internal/service"
+	"github.com/go-kratos/kratos/v2/middleware/tracing"
+	"github.com/go-kratos/kratos/v2/transport/http"
+
+	v1 "github.com/bleakplain/inventory/api/inventory/v1"
+	"github.com/bleakplain/inventory/internal/conf"
+	"github.com/bleakplain/inventory/internal/service"
 )
 
-func NewHTTPServer(c *conf.ServerConfig, inventorySvc *service.InventoryService, logger log.Logger) *server.Server {
-	var opts = []server.ServerOption{
-		server.WithAddress(c.HTTP.Addr),
-		server.WithLogger(logger),
-		server.WithMiddleware(
+func NewHTTPServer(c *conf.Server,
+	inventorySvc *service.InventoryService, logger log.Logger) *http.Server {
+	var opts = []http.ServerOption{
+		http.Middleware(
 			recovery.Recovery(),
+			tracing.Server(),
 			logging.Server(logger),
 		),
 	}
-
-	srv := server.NewServer(opts...)
-
-	httpHandler := http.NewServeMux()
-	httpHandler.HandleFunc("/inventory", func(w http.ResponseWriter, r *http.Request) {
-		// Implement your HTTP handler logic here
-	})
-
-	srv.HandlePrefix("/", httpHandler)
-
+	if c.Http.Network != "" {
+		opts = append(opts, http.Network(c.Http.Network))
+	}
+	if c.Http.Addr != "" {
+		opts = append(opts, http.Address(c.Http.Addr))
+	}
+	if c.Http.Timeout != nil {
+		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
+	}
+	srv := http.NewServer(opts...)
+	v1.RegisterInventoryServiceHTTPServer(srv, inventorySvc)
 	return srv
 }
